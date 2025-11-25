@@ -1,4 +1,11 @@
-# AltFlex: AI & Digital Forensics Framework
+# 💫 AltFlex: AI & Digital Forensics Framework
+
+<!-- 🤖 Machine Learning 🤖 -->
+<div align="center">
+<img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZXJna2t4azF0d3Qxc3c4cnQyMzNpZTFiZmJtYWQ2Znk5ZTIyZXM3dyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/POImbcaDpzBrk5jDCD/giphy.gif" width="250">
+<img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3c2sxYjJ0ZXNxNzFtb2tweWthdDk1Y2V1dnVuZmo1d3YxNHloZXc1ZyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/j2k3CEUW5qga5nHUml/giphy.gif" width="300">
+<img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZXJna2t4azF0d3Qxc3c4cnQyMzNpZTFiZmJtYWQ2Znk5ZTIyZXM3dyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/5bgVvcQz3gFgindtSk/giphy.gif" width="250">
+</div>
 
 ## A. Project Overview
 AltFlex is an integrated AI and digital forensics framework designed to proactively detect and analyze security exploits in cross-chain bridges and DeFi protocols. By combining machine learning anomaly detection with blockchain forensic analysis, the system provides a comprehensive security solution for the rapidly evolving Web3 ecosystem.
@@ -115,3 +122,99 @@ Prerequisites: Python 3.10+
    ```bash
    docker-compose down
    ```
+
+
+<!-- 🏆 Contributers down below -->
+# 🏆 Contributing     
+
+### Contributing     
+If you would like to contribute to the Flight Booking App, please follow these steps:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and commit them.
+4. Push your changes to your forked repository.
+5. Submit a pull request to the main repository.
+
+
+### 🧠 Submitting Changes
+
+🧠 Contributions are welcome! If you have ideas for improvements or want to add more exercises, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push to your fork and submit a pull request. 💕💕💕💕
+
+<!-- Contributors down below, kindly paste your github URL thanks and also you can revise your suited job title position 
+### 👋 Contributors
+### Special thanks to all my groupmates: 
+ * ####  😎 [Jay Arre Talosig](https://github.com/flexycode) - Machine Learning Engineer | Blockchain Developer | Bioinformatics Scientist    
+ * ####  🧭 [Rinoah Venedict Dela Rama](https://github.com/Noah-dev2217) - Python Developer | QA Engineer | Data Engineer 
+ * ####  💥 [Alexander Castilo](https://github.com/mnmzz) - Penetration Tester | Software Engineer 
+ * ####  🎲 [Nicko Nehcterg Dalida](https://github.com/debug-phantom) - Digital Forensics Analyst | QA Engineer | Smart Contract 
+ * ####  🎲 [Mark Jhosua Taberna](https://github.com/debug-phantom) - Digital Forensics Analyst | UI Specialist | Full Stack Developer
+-->
+
+# 🛸 FAQ
+<!--  Reporting issues -->
+### 🛸 Reporting Issues
+
+```bash
+Some changes need to be address
+- TBA
+- TBA
+- TBA
+```
+
+# 📫 Changelogs 
+Chronological list of updates, bug fixes, new features, and other modifications for our Software Engineering Project.
+
+## 💻 [01.0.0] - 2025-11-17      
+### Role & Project Management
+- 💻 Final Project requirements for our project
+
+## 💻 [01.1.0] - 2025-11-24      
+### Role & Project Management
+- 💻 Construct the important folder in the overall 
+
+## 💻 [02.0.0] - 2025-11-25      
+### Development Progress
+- 💻 TBA
+
+### Commit message for pushing or pull-request  
+🧊 CCSFEN2L ALTFLEX
+
+<!-- This comment is intended for commiting message in pull-request 
+Always use this "🧊 Flight Booking" for commiting message for "Pull-request"
+<!-- End point line for this comment  -->
+
+<!-- Introduction Pannel button link, it will redirect to the top -->
+#### [Back to Table of Content](#-introduction)
+
+<!-- End point line insert Thanks for visiting enjoy your day, feel free to modify this  -->
+---
+<p align="center">
+<img src="https://readme-typing-svg.demolab.com/?lines=Thanks+For+Visiting+Enjoy+Your+Day+~!;" alt="mystreak"/>
+</p>
+
+<!-- Software Engineering -->
+<div align="center">
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGxxeWR5bzJjajBnc3o5YTc5dGhzc2xsYWJ4aW5rOGZuamNtMjdnayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/1rL7L4GaUTe55s5Sfm/giphy.gif" width="300">
+<img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXk2cnByenBzdHR2Y2plYmxyYnVoY2pjaWRlOTRjcTBrMWV3czI0diZlcD12MV9naWZzX3NlYXJjaCZjdD1n/TH1EAFhvE2ucRSMkPC/giphy.gif" width="300">
+</div>
+
+<!-- End point line insert Comeback again next time, feel free to modify this  -->
+<p align="center">
+<img src="https://readme-typing-svg.demolab.com/?lines=Come+Back+Again+next+time" alt="mystreak"/>
+</p>
+
+</p>
+    
+<br>
+<!-- End point insert background effect line of sight color red -->
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="1000">
+
+
+   
+
+
