@@ -195,6 +195,10 @@ Chronological list of updates, bug fixes, new features, and other modifications 
 ### Development Progress
 - 💻 TBA
 
+## 💻 [03.0.0] - 2025-12-04      
+### Development Progress
+- 💻 TBA
+
 ### Commit message for pushing or pull-request  
 🧊 CCSFEN2L ALTFLEX
 
