@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"  # Streamlit
+      - "8000:8000"  # FastAPI
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+    command: bash -c "uvicorn src.app.main:app --host 0.0.0.0 --port 8000 & streamlit run src/app/dashboard.py"
+    environment:
+      - PYTHONUNBUFFERED=1
