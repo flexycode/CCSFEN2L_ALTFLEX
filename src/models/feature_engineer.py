@@ -2,27 +2,199 @@
 Feature Engineering Module.
 
 This module handles the transformation of raw blockchain data into features suitable for ML models.
+Specifically designed for flash loan attack detection.
 """
 
+import pandas as pd
+import numpy as np
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+
+
 class FeatureEngineer:
+    """
+    Feature extraction pipeline for blockchain transaction analysis.
+    Focuses on flash loan attack indicators.
+    """
+    
+    # Thresholds for feature engineering
+    LARGE_VALUE_THRESHOLD_ETH = 100  # ETH
+    HIGH_GAS_THRESHOLD = 500000
+    HIGH_GAS_PRICE_GWEI = 50
+    RAPID_TX_WINDOW_SECONDS = 60
+    
     def __init__(self):
-        pass
-
-    def process_transaction_data(self, raw_data):
+        self.feature_names = []
+    
+    def process_transaction_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         """
-        Extracts features from transaction lists.
+        Extracts features from transaction dataframe.
+        
+        Args:
+            raw_data: DataFrame with columns: tx_hash, block_number, timestamp, 
+                     from_address, to_address, value_eth, gas_used, gas_price_gwei
+        
+        Returns:
+            DataFrame with extracted features
         """
-        # Placeholder: e.g., calculate frequency, amount, time_diff
-        features = []
+        df = raw_data.copy()
+        
+        # Basic features
+        features = pd.DataFrame()
+        features['value_eth'] = df['value_eth'].astype(float)
+        features['gas_used'] = df['gas_used'].astype(float)
+        features['gas_price_gwei'] = df['gas_price_gwei'].astype(float)
+        
+        # Calculated features
+        features['gas_cost_eth'] = (features['gas_used'] * features['gas_price_gwei']) / 1e9
+        features['value_to_gas_ratio'] = features['value_eth'] / (features['gas_cost_eth'] + 1e-10)
+        
+        # Binary indicator features
+        features['is_large_value'] = (features['value_eth'] > self.LARGE_VALUE_THRESHOLD_ETH).astype(int)
+        features['is_high_gas'] = (features['gas_used'] > self.HIGH_GAS_THRESHOLD).astype(int)
+        features['is_high_gas_price'] = (features['gas_price_gwei'] > self.HIGH_GAS_PRICE_GWEI).astype(int)
+        
+        # Flash loan indicator if column exists
+        if 'is_flash_loan' in df.columns:
+            features['is_flash_loan'] = df['is_flash_loan'].astype(int)
+        
+        # Log transformations for better ML performance
+        features['log_value'] = np.log1p(features['value_eth'])
+        features['log_gas'] = np.log1p(features['gas_used'])
+        
+        self.feature_names = features.columns.tolist()
         return features
+    
+    def extract_address_features(self, transactions: pd.DataFrame, address: str) -> Dict[str, Any]:
+        """
+        Extract aggregate features for a specific address from its transaction history.
+        
+        Args:
+            transactions: DataFrame of transactions
+            address: The address to analyze
+        
+        Returns:
+            Dictionary of computed features
+        """
+        # Filter transactions for this address
+        addr_lower = address.lower()
+        mask = (transactions['from_address'].str.lower() == addr_lower) | \
+               (transactions['to_address'].str.lower() == addr_lower)
+        addr_txs = transactions[mask].copy()
+        
+        if len(addr_txs) == 0:
+            return self._empty_address_features()
+        
+        # Convert types
+        addr_txs['value_eth'] = addr_txs['value_eth'].astype(float)
+        addr_txs['gas_used'] = addr_txs['gas_used'].astype(float)
+        addr_txs['gas_price_gwei'] = addr_txs['gas_price_gwei'].astype(float)
+        addr_txs['timestamp'] = addr_txs['timestamp'].astype(int)
+        
+        features = {
+            # Transaction count
+            'tx_count': len(addr_txs),
+            
+            # Value statistics
+            'total_value_eth': addr_txs['value_eth'].sum(),
+            'mean_value_eth': addr_txs['value_eth'].mean(),
+            'max_value_eth': addr_txs['value_eth'].max(),
+            'std_value_eth': addr_txs['value_eth'].std() if len(addr_txs) > 1 else 0,
+            
+            # Gas statistics
+            'mean_gas_used': addr_txs['gas_used'].mean(),
+            'max_gas_used': addr_txs['gas_used'].max(),
+            'mean_gas_price': addr_txs['gas_price_gwei'].mean(),
+            
+            # Time-based features
+            'time_span_seconds': addr_txs['timestamp'].max() - addr_txs['timestamp'].min(),
+            
+            # Counterparty analysis
+            'unique_counterparties': self._count_unique_counterparties(addr_txs, addr_lower),
+            
+            # Risk indicators
+            'large_tx_ratio': (addr_txs['value_eth'] > self.LARGE_VALUE_THRESHOLD_ETH).mean(),
+            'high_gas_tx_ratio': (addr_txs['gas_used'] > self.HIGH_GAS_THRESHOLD).mean(),
+        }
+        
+        # Same-block transactions (flash loan indicator)
+        block_counts = addr_txs['block_number'].value_counts()
+        features['max_txs_same_block'] = block_counts.max() if len(block_counts) > 0 else 0
+        features['has_same_block_txs'] = int(features['max_txs_same_block'] > 1)
+        
+        # Flash loan indicator if available
+        if 'is_flash_loan' in addr_txs.columns:
+            features['flash_loan_tx_count'] = addr_txs['is_flash_loan'].sum()
+        else:
+            features['flash_loan_tx_count'] = 0
+        
+        return features
+    
+    def _count_unique_counterparties(self, txs: pd.DataFrame, address: str) -> int:
+        """Count unique addresses this address has interacted with."""
+        counterparties = set()
+        for _, tx in txs.iterrows():
+            if tx['from_address'].lower() == address:
+                counterparties.add(tx['to_address'].lower())
+            else:
+                counterparties.add(tx['from_address'].lower())
+        return len(counterparties)
+    
+    def _empty_address_features(self) -> Dict[str, Any]:
+        """Return empty features for an address with no transactions."""
+        return {
+            'tx_count': 0,
+            'total_value_eth': 0.0,
+            'mean_value_eth': 0.0,
+            'max_value_eth': 0.0,
+            'std_value_eth': 0.0,
+            'mean_gas_used': 0.0,
+            'max_gas_used': 0.0,
+            'mean_gas_price': 0.0,
+            'time_span_seconds': 0,
+            'unique_counterparties': 0,
+            'large_tx_ratio': 0.0,
+            'high_gas_tx_ratio': 0.0,
+            'max_txs_same_block': 0,
+            'has_same_block_txs': 0,
+            'flash_loan_tx_count': 0,
+        }
+    
+    def prepare_training_data(self, df: pd.DataFrame) -> tuple:
+        """
+        Prepare features and labels for model training.
+        
+        Args:
+            df: DataFrame with transaction data and 'is_malicious' column
+        
+        Returns:
+            Tuple of (X features array, y labels array)
+        """
+        features_df = self.process_transaction_data(df)
+        
+        # Select feature columns (exclude target-related columns)
+        feature_cols = [col for col in features_df.columns if col not in ['is_flash_loan']]
+        X = features_df[feature_cols].values
+        
+        # Get labels
+        if 'is_malicious' in df.columns:
+            y = df['is_malicious'].astype(int).values
+        else:
+            y = np.zeros(len(df))
+        
+        return X, y, feature_cols
 
-    def process_graph_data(self, graph_data):
-        """
-        Prepares graph structures for GNN input.
-        """
-        # Placeholder for node/edge feature extraction
-        return graph_data
 
 if __name__ == "__main__":
+    # Test with sample data
     engineer = FeatureEngineer()
     print("Feature Engineer initialized.")
+    
+    # Load sample data
+    try:
+        sample_df = pd.read_csv("../../data/sample_transactions.csv")
+        features = engineer.process_transaction_data(sample_df)
+        print(f"Extracted {len(engineer.feature_names)} features:")
+        print(engineer.feature_names)
+    except FileNotFoundError:
+        print("Sample data not found. Run from project root.")

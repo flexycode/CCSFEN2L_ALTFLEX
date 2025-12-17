@@ -73,3 +73,9 @@ The core logic of the application, organized by functional area.
   - **Contents**:
     - Unit tests for individual functions (collectors, parsers).
     - Integration tests for the full pipeline (data -> model -> api).
+
+### 6. Documentation
+- **`docs/`**
+  - **Purpose**: Documentation for the project.
+  - **Function**: Contains documentation for the project, including the API documentation, user documentation, and developer documentation.
+

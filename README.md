@@ -39,6 +39,67 @@ The project will be executed in the following phases:
 <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3NjM5am54eWk0dWg4ZjNnc3Zka2NmcDFwOXI3dHRwcHAyam93MW9xNCZlcD12MV9zdGlja2Vyc19yZWxhdGVkJmN0PXM/RIqDQOdEJZzg2Zijvm/giphy.gif" width="250">
 </div>
 
+---
+
+## 🚀 Phase 1: Production-Ready Architecture (Flash Loan Detection)
+
+### Architecture Overview
+
+```mermaid
+flowchart LR
+    subgraph Data Layer
+        A[Etherscan API] --> B[EtherscanCollector]
+        C[Sample Data] --> D[data/]
+    end
+    
+    subgraph Processing
+        B --> E[FeatureEngineer]
+        D --> E
+        E --> F[AnomalyDetector]
+        E --> G[ExploitDetector]
+    end
+    
+    subgraph API Layer
+        F --> H[FastAPI]
+        G --> H
+    end
+    
+    subgraph UI Layer
+        H --> I[Streamlit Dashboard]
+    end
+```
+
+### ✨ Key Features Implemented
+| Component | Description | Status |
+|-----------|-------------|--------|
+| 🔍 **Rule-Based Detection** | 6 detection rules for flash loan patterns | ✅ Complete |
+| 🤖 **ML Anomaly Detection** | XGBoost classifier with training pipeline | ✅ Complete |
+| 🌐 **FastAPI Backend** | 12 REST API endpoints | ✅ Complete |
+| 📊 **Streamlit Dashboard** | 5 interactive pages | ✅ Complete |
+| 📦 **Sample Data** | 5 real exploits, 50 transactions | ✅ Complete |
+| ✅ **Unit Tests** | 23+ test cases | ✅ Complete |
+
+### 📈 Known Exploits Tracked
+| Exploit | Date | Protocol | Loss |
+|---------|------|----------|------|
+| Euler Finance | 2023-03-13 | Euler | $197M |
+| Cream Finance | 2021-10-27 | Cream | $130M |
+| Pancake Bunny | 2021-05-20 | PancakeBunny | $45M |
+| Harvest Finance | 2020-10-26 | Harvest | $34M |
+| bZx Protocol | 2020-02-15 | bZx | $350K |
+
+### 🔌 API Endpoints
+| Endpoint | Method | Purpose |
+|----------|--------|--------|
+| `/health` | GET | Health check |
+| `/api/analyze` | POST | Full transaction analysis |
+| `/api/address/check` | POST | Check known attackers |
+| `/api/exploits` | GET | List known exploits |
+| `/api/detect/rules` | POST | Rule-only detection |
+| `/api/detect/anomaly` | POST | ML-only detection |
+
+---
+
 ## E. Conclusion
 AltFlex addresses a critical gap in Web3 security through an innovative combination of artificial intelligence and digital forensics. The proposed framework provides a foundation for proactive security monitoring and comprehensive incident analysis.
 
@@ -102,44 +163,85 @@ AltFlex addresses a critical gap in Web3 security through an innovative combinat
 ### Access Links
 Once the application is running, you can access the services at:
 - **Dashboard (Streamlit)**: [http://localhost:8501](http://localhost:8501)
-- **API (FastAPI)**: [http://localhost:8000](http://localhost:8000)
+- **API Docs (Swagger)**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **API Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
 
-### Option 1: Running Locally (Recommended if Docker fails)
-Prerequisites: Python 3.10+
+### Option 1: Running Locally (Recommended)
 
-1. **Create a virtual environment:**
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .venv\Scripts\activate
-   # Mac/Linux:
-   source .venv/bin/activate
-   ```
+**Prerequisites:** Python 3.10+
 
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+#### Step 1: Create Virtual Environment
+```bash
+# Create virtual environment
+python -m venv .venv
 
-3. **Run the application:**
-   Run the API and Dashboard in separate terminals:
-   ```bash
-   # Terminal 1: API
-   uvicorn src.app.main:app --reload
+# Activate (choose your OS):
+# Windows PowerShell:
+.\.venv\Scripts\Activate.ps1
+# Windows CMD:
+.venv\Scripts\activate.bat
+# Mac/Linux:
+source .venv/bin/activate
+```
 
-   # Terminal 2: Dashboard
-   streamlit run src/app/dashboard.py
-   ```
+#### Step 2: Install Dependencies
+```bash
+# Standard (if python/pip in PATH):
+pip install -r requirements.txt
+
+# Windows Alternative (if pip not found):
+.\.venv\Scripts\pip.exe install -r requirements.txt
+```
+
+#### Step 3: Run the Application
+Open **two separate terminals** and run:
+
+**Terminal 1 - API Server:**
+```bash
+# Standard:
+uvicorn src.app.main:app --reload --port 8000
+
+# Windows Alternative:
+.\.venv\Scripts\python.exe -m uvicorn src.app.main:app --reload --port 8000
+```
+
+**Terminal 2 - Dashboard:**
+```bash
+# Standard:
+streamlit run src/app/dashboard.py
+
+# Windows Alternative:
+.\.venv\Scripts\python.exe -m streamlit run src/app/dashboard.py
+```
+
+#### Step 4: Run Tests (Optional)
+```bash
+# Standard:
+pytest tests/ -v
+
+# Windows Alternative:
+.\.venv\Scripts\python.exe -m pytest tests/ -v
+```
 
 ### Option 2: Running with Docker
-1. **Build and start services:**
-   ```bash
-   docker-compose up -d --build
-   ```
-2. **Stop services:**
-   ```bash
-   docker-compose down
-   ```
+```bash
+# Build and start all services
+docker-compose up -d --build
+
+# Stop services
+docker-compose down
+```
+
+### 🔧 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| `pip not found` | Use `.\.venv\Scripts\pip.exe` instead |
+| `python not found` | Use `.\.venv\Scripts\python.exe` instead |
+| `Module not found` | Ensure you activated the virtual environment |
+| `Port already in use` | Change port: `--port 8001` |
+| `API offline in dashboard` | Start the API server first before dashboard |
+
 
 <!-- 🤖 Machine Learning 🤖 -->
 <div align="center">
@@ -202,13 +304,17 @@ Chronological list of updates, bug fixes, new features, and other modifications 
 ### Role & Project Management
 - 💻 Construct the important folder in the overall 
 
-## 💻 [02.0.0] - 2025-11-25      
+## 💻 [02.0.0] - 2025-11-25      
 ### Development Progress
-- 💻 TBA
+- 💻 Initial project structure setup
+- 📁 Created `src/`, `data/`, `tests/`, `notebooks/` directories
+- 🔧 Configured `.devcontainer` for VS Code development
 
-## 💻 [03.0.0] - 2025-12-04      
+## 💻 [03.0.0] - 2025-12-04      
 ### Development Progress
-- 💻 TBA
+- 📝 Documentation structure established
+- 🐳 Docker configuration added (`docker-compose.yml`)
+- 📋 Requirements planning completed
 
 ## 💻 [04.0.0] - 2025-12-08
 ### AI/ML Component Integration
@@ -216,11 +322,24 @@ Chronological list of updates, bug fixes, new features, and other modifications 
 - 💻 **Models**: Added `gnn_analyzer.py`, `anomaly_detector.py`, and `feature_engineer.py`.
 - 💻 **Notebooks**: Added data exploration and model prototyping notebooks.
 
+## 🚀 [05.0.0] - 2025-12-17
+### Phase 1: Production-Ready Flash Loan Detection Platform
+- 🔍 **Exploit Detector**: Implemented 6 rule-based detection rules for flash loan attacks
+- 🤖 **Anomaly Detector**: Complete XGBoost implementation with training pipeline (265 lines)
+- 📊 **Feature Engineer**: Flash loan-specific feature extraction (185 lines)
+- 🌐 **FastAPI Backend**: Expanded to 12 API endpoints (400+ lines)
+- 📱 **Streamlit Dashboard**: Full 5-page interactive UI (450+ lines)
+- 📦 **Sample Data**: 
+  - `flash_loan_exploits.json`: 5 real exploit signatures ($406M+ tracked)
+  - `sample_transactions.csv`: 50 transactions (12 malicious samples)
+- ✅ **Testing**: 23+ unit tests, API integration tests
+- ⚙️ **Configuration**: Added `.env.example`, updated `requirements.txt` (15+ dependencies)
+
 ### Commit message for pushing or pull-request  
 🧊 CCSFEN2L ALTFLEX
 
 <!-- This comment is intended for commiting message in pull-request 
-Always use this "🧊 Flight Booking" for commiting message for "Pull-request"
+Always use this "🧊 CCSFEN2L ALTFLEX" for commiting message for "Pull-request"
 <!-- End point line for this comment  -->
 
 <!-- Introduction Pannel button link, it will redirect to the top -->
@@ -248,3 +367,4 @@ Always use this "🧊 Flight Booking" for commiting message for "Pull-request"
 <br>
 <!-- End point insert background effect line of sight color red -->
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="1000">
+
