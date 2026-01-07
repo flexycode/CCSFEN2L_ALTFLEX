@@ -126,15 +126,27 @@ def get_risk_color(risk_level: str) -> str:
 
 
 # =============================================================================
-# Sidebar Navigation
+# Sidebar Navigation & Session State
 # =============================================================================
+
+# Initialize session state for page navigation if not present
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Home"
+
+def navigate_to(page):
+    """Callback to switch pages."""
+    st.session_state.page = page
 
 st.sidebar.title("🛡️ AltFlex")
 st.sidebar.markdown("---")
 
-page = st.sidebar.radio(
+pages = ["🏠 Home", "🔍 Transaction Analyzer", "📍 Address Checker", "📚 Exploits Database", "📊 Data Explorer"]
+
+# Navigation radio bound directly to session state
+st.sidebar.radio(
     "Navigation",
-    ["🏠 Home", "🔍 Transaction Analyzer", "📍 Address Checker", "📚 Exploits Database", "📊 Data Explorer"]
+    pages,
+    key="page"
 )
 
 st.sidebar.markdown("---")
@@ -156,7 +168,7 @@ else:
 # Page: Home
 # =============================================================================
 
-if page == "🏠 Home":
+if st.session_state.page == "🏠 Home":
     st.markdown("<h1 class='main-header'>🛡️ AltFlex Dashboard</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; font-size: 1.2rem; color: #666;'>AI-Powered Forensic Framework for DeFi Exploit Detection</p>", unsafe_allow_html=True)
     
@@ -208,21 +220,15 @@ if page == "🏠 Home":
     
     with col1:
         st.info("**🔍 Analyze Transaction**\n\nCheck a single transaction for exploit patterns.")
-        if st.button("Go to Analyzer →"):
-            st.session_state.page = "🔍 Transaction Analyzer"
-            st.rerun()
+        st.button("Go to Analyzer →", on_click=navigate_to, args=("🔍 Transaction Analyzer",))
     
     with col2:
         st.warning("**📍 Check Address**\n\nVerify if an address is a known attacker.")
-        if st.button("Go to Address Checker →"):
-            st.session_state.page = "📍 Address Checker"
-            st.rerun()
+        st.button("Go to Address Checker →", on_click=navigate_to, args=("📍 Address Checker",))
     
     with col3:
         st.error("**📚 Exploits Database**\n\nBrowse known flash loan attacks.")
-        if st.button("View Database →"):
-            st.session_state.page = "📚 Exploits Database"
-            st.rerun()
+        st.button("View Database →", on_click=navigate_to, args=("📚 Exploits Database",))
     
     # About section
     st.markdown("---")
@@ -249,7 +255,7 @@ if page == "🏠 Home":
 # Page: Transaction Analyzer
 # =============================================================================
 
-elif page == "🔍 Transaction Analyzer":
+elif st.session_state.page == "🔍 Transaction Analyzer":
     st.title("🔍 Transaction Analyzer")
     st.markdown("Analyze individual transactions for potential exploit patterns.")
     
@@ -359,7 +365,7 @@ elif page == "🔍 Transaction Analyzer":
 # Page: Address Checker
 # =============================================================================
 
-elif page == "📍 Address Checker":
+elif st.session_state.page == "📍 Address Checker":
     st.title("📍 Address Checker")
     st.markdown("Check if an Ethereum address is associated with known exploits.")
     
@@ -410,7 +416,7 @@ elif page == "📍 Address Checker":
 # Page: Exploits Database
 # =============================================================================
 
-elif page == "📚 Exploits Database":
+elif st.session_state.page == "📚 Exploits Database":
     st.title("📚 Known Exploits Database")
     st.markdown("Browse documented flash loan attacks and exploit patterns.")
     
@@ -457,7 +463,7 @@ elif page == "📚 Exploits Database":
 # Page: Data Explorer
 # =============================================================================
 
-elif page == "📊 Data Explorer":
+elif st.session_state.page == "📊 Data Explorer":
     st.title("📊 Data Explorer")
     st.markdown("Explore the sample transaction dataset.")
     

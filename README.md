@@ -335,6 +335,13 @@ Chronological list of updates, bug fixes, new features, and other modifications 
 - ✅ **Testing**: 23+ unit tests, API integration tests
 - ⚙️ **Configuration**: Added `.env.example`, updated `requirements.txt` (15+ dependencies)
 
+## 🔧 [05.1.0] - 2026-01-07
+### Bug Fixes & Stability Improvements
+- 🌐 **API**: Fixed `uvicorn` startup configuration to support hot-reloading by using import strings.
+- 📱 **Dashboard**: Fixed critical navigation bug in "Quick Actions" using state callbacks.
+- ✅ **Verification**: Validated end-to-end functionality of API and Dashboard using sub-agent verification.
+
+
 ### Commit message for pushing or pull-request  
 🧊 CCSFEN2L ALTFLEX
 
