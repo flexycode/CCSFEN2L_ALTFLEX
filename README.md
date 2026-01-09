@@ -281,6 +281,9 @@ If you would like to contribute to the Flight Booking App, please follow these s
  * ####  🥷 [Nicko Nehcterg Dalida](https://github.com/nicknicndin) - Digital Forensics Analyst | QA Engineer | Smart Contract Auditor
  * ####  🧑‍💻 [Mark Jhosua Taberna](https://github.com/MjTaberna) - Digital Forensics Analyst | UI Specialist | Full Stack Engineer
 
+### 🤝 Collab
+ * ####  🧊 [Brian Carlo De Vera](https://github.com/scarfer14) - QA Engineer | Cybersecurity Engineer | Network Engineer
+
 
 # 🛸 FAQ
 <!--  Reporting issues -->
