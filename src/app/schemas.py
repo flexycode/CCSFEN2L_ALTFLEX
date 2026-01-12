@@ -4,10 +4,18 @@ API Schemas Module.
 Pydantic models for request/response validation in the AltFlex API.
 """
 
-from pydantic import BaseModel, Field
+import re
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 from enum import Enum
+
+
+# =============================================================================
+# Address Validation Pattern
+# =============================================================================
+
+ETH_ADDRESS_PATTERN = re.compile(r'^0x[a-fA-F0-9]{40}$')
 
 
 # =============================================================================
@@ -46,6 +54,22 @@ class TransactionAnalysisRequest(BaseModel):
     timestamp: Optional[int] = Field(None, description="Unix timestamp")
     is_flash_loan: bool = Field(False, description="Flash loan indicator")
     
+    @field_validator('from_address', 'to_address')
+    @classmethod
+    def validate_eth_address(cls, v: str) -> str:
+        """Validate and normalize Ethereum address format."""
+        if not isinstance(v, str):
+            raise ValueError('Address must be a string')
+        if not v:
+            raise ValueError('Address cannot be empty')
+        if not v.startswith('0x'):
+            raise ValueError("Address must start with '0x'")
+        if len(v) != 42:
+            raise ValueError(f'Address must be 42 characters, got {len(v)}')
+        if not ETH_ADDRESS_PATTERN.match(v):
+            raise ValueError('Invalid Ethereum address format (must be 0x + 40 hex chars)')
+        return v.lower()  # Normalize to lowercase
+    
     class Config:
         json_schema_extra = {
             "example": {
@@ -63,6 +87,22 @@ class AddressAnalysisRequest(BaseModel):
     """Request model for analyzing an address."""
     address: str = Field(..., description="Ethereum address to analyze")
     include_transactions: bool = Field(True, description="Include transaction analysis")
+    
+    @field_validator('address')
+    @classmethod
+    def validate_eth_address(cls, v: str) -> str:
+        """Validate and normalize Ethereum address format."""
+        if not isinstance(v, str):
+            raise ValueError('Address must be a string')
+        if not v:
+            raise ValueError('Address cannot be empty')
+        if not v.startswith('0x'):
+            raise ValueError("Address must start with '0x'")
+        if len(v) != 42:
+            raise ValueError(f'Address must be 42 characters, got {len(v)}')
+        if not ETH_ADDRESS_PATTERN.match(v):
+            raise ValueError('Invalid Ethereum address format (must be 0x + 40 hex chars)')
+        return v.lower()  # Normalize to lowercase
     
     class Config:
         json_schema_extra = {
