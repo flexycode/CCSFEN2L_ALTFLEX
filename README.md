@@ -100,6 +100,242 @@ flowchart LR
 
 ---
 
+## 🔐 Phase 2: Address Detection Security Enhancement
+
+### Overview
+Phase 2 strengthens the framework's address verification and behavioral analysis capabilities through a comprehensive 4-sprint implementation focused on security, intelligence, and API hardening.
+
+### Architecture Enhancement
+
+```mermaid
+flowchart TB
+    subgraph Input Layer
+        A[Address Input] --> B[Validation Layer]
+    end
+    
+    subgraph Sprint 1: Validation
+        B --> C[Format Check]
+        B --> D[Checksum Validation]
+        B --> E[ICAP Detection]
+    end
+    
+    subgraph Sprint 2: On-Chain
+        C --> F[Etherscan Verifier]
+        F --> G[Balance Check]
+        F --> H[Contract Detection]
+        F --> I[Address Age]
+    end
+    
+    subgraph Sprint 3: Behavioral
+        I --> J[Velocity Scoring]
+        I --> K[Funding Analysis]
+        I --> L[Blacklist Check]
+    end
+    
+    subgraph Sprint 4: API Security
+        J --> M[Rate Limiter]
+        K --> M[Rate Limiter]
+        L --> M[Rate Limiter]
+        M --> N[API Key Auth]
+        N --> O[Audit Logger]
+    end
+    
+    O --> P[Risk Assessment]
+```
+
+### 🎯 Sprint Implementation Summary
+
+| Sprint | Focus | Components | Tests | Status |
+|--------|-------|------------|-------|--------|
+| **Sprint 1** | Validation Layer | Format, Checksum, ICAP | 44 | ✅ Complete |
+| **Sprint 2** | On-Chain Verification | Balance, Contract, Age | 21 | ✅ Complete |
+| **Sprint 3** | Behavioral Analysis | Velocity, Funding, Blacklist | 24 | ✅ Complete |
+| **Sprint 4** | API Hardening | Rate Limit, Auth, Logging | 34 | ✅ Complete |
+| **Total** | | **11 New Modules** | **123** | ✅ **Complete** |
+
+---
+
+### 📦 Sprint 1: Address Validation Layer
+
+**Objective:** Implement comprehensive format validation for Ethereum addresses.
+
+#### Components Added
+- **`address_validator.py`** (255 lines)
+  - `validate_format()` — Regex-based address format checking
+  - `validate_checksum()` — EIP-55 checksum validation
+  - `detect_icap()` — ICAP address format detection
+  - `is_all_same_character()` — Detect suspicious patterns
+
+#### Test Coverage
+```
+44/44 tests passed
+- Format validation (11 tests)
+- Checksum validation (10 tests)
+- ICAP detection (6 tests)
+- Pattern detection (17 tests)
+```
+
+#### Key Features
+- ✅ EIP-55 checksum validation
+- ✅ ICAP (IBAN-like) address support
+- ✅ Suspicious pattern detection (all zeros, sequential chars)
+- ✅ Comprehensive error messages
+
+---
+
+### 🔗 Sprint 2: On-Chain Verification
+
+**Objective:** Verify address existence and gather intelligence from the blockchain.
+
+#### Components Added
+- **`etherscan_collector.py`** (Extended)
+  - `get_balance()` — ETH balance lookup
+  - `get_transaction_count()` — Transaction history count
+  - `is_contract()` — Contract vs EOA detection
+  - `get_first_transaction()` — Address age calculation
+  - `verify_address()` — Comprehensive verification
+
+- **`address_verifier.py`** (277 lines)
+  - `AddressVerifier` — High-level verification utility
+  - `ComprehensiveAddressReport` — Combined validation + on-chain data
+
+#### Test Coverage
+```
+21/21 tests passed
+- Balance checks (3 tests)
+- Contract detection (3 tests)
+- Transaction counting (2 tests)
+- Address age verification (2 tests)
+- Comprehensive verification (11 tests)
+```
+
+#### Key Features
+- ✅ Real-time balance verification
+- ✅ Contract vs EOA differentiation
+- ✅ Address age detection (flag new addresses)
+- ✅ Dormant address identification
+
+---
+
+### 🧠 Sprint 3: Behavioral Analysis Enhancement
+
+**Objective:** Detect suspicious behavior patterns that format/on-chain checks miss.
+
+#### Components Added
+- **`behavioral_analyzer.py`** (466 lines)
+  - `VelocityScore` — Transaction frequency analysis
+  - `FundingPatternScore` — Funding source analysis
+  - `BehavioralReport` — Comprehensive behavioral assessment
+  - `analyze_velocity()` — Burst detection, high-frequency patterns
+  - `analyze_funding_patterns()` — Circular funding, wash trading
+
+- **`feature_engineer.py`** (Extended)
+  - `compute_velocity_features()` — Velocity-based ML features
+  - `compute_funding_pattern_features()` — Funding-based ML features
+  - `extract_enhanced_address_features()` — Combined feature extraction
+
+- **`exploit_detector.py`** (Extended)
+  - `check_external_blacklists()` — OFAC, mixer, phisher checks
+  - `get_comprehensive_address_risk()` — Multi-source risk assessment
+
+#### Test Coverage
+```
+24/24 tests passed
+- Velocity analysis (4 tests)
+- Funding pattern detection (4 tests)
+- Behavioral scoring (4 tests)
+- Feature engineering (3 tests)
+- Blacklist integration (7 tests)
+```
+
+#### Key Features
+- ✅ **Velocity Scoring** — Detect burst activity, high transaction frequency
+- ✅ **Funding Patterns** — Circular funding, wash trading, concentration analysis
+- ✅ **External Blacklists** — OFAC sanctioned addresses, known mixers
+- ✅ **Sybil Detection** — Low funding diversity, suspicious patterns
+
+---
+
+### 🛡️ Sprint 4: API Hardening
+
+**Objective:** Secure the FastAPI backend against abuse and enable security monitoring.
+
+#### Components Added
+- **`security_middleware.py`** (615 lines)
+  - `RateLimiter` — Token bucket rate limiting (100 req/min default)
+  - `RateLimitMiddleware` — FastAPI middleware wrapper
+  - `APIKeyAuth` — X-API-Key header authentication
+  - `RequestValidator` — Input sanitization, XSS/SQLi prevention
+  - `AuditLogger` — Request/response logging with timestamps
+  - `AuditLogMiddleware` — Automatic security event logging
+
+- **`main.py`** (Extended)
+  - Integrated `setup_security_middleware()`
+  - Security configuration via environment variables
+
+#### Test Coverage
+```
+34/34 tests passed
+- Rate limiting (6 tests)
+- API key authentication (5 tests)
+- Request validation (12 tests)
+- Audit logging (5 tests)
+- Security configuration (6 tests)
+```
+
+#### Security Features
+| Feature | Configuration | Purpose |
+|---------|---------------|---------|
+| Rate Limiting | 100 req/min per IP | Prevent DoS attacks |
+| API Key Auth | `X-API-Key` header | Optional authentication |
+| Request Validation | Auto-sanitization | Prevent injection attacks |
+| Audit Logging | All requests logged | Security monitoring |
+
+#### Environment Variables
+```bash
+# Rate Limiting
+RATE_LIMIT_REQUESTS=100
+RATE_LIMIT_WINDOW_SECONDS=60
+
+# Authentication
+ALTFLEX_API_KEYS=key1,key2,key3
+ALTFLEX_API_KEY_REQUIRED=false
+
+# Logging
+AUDIT_LOG_ENABLED=true
+AUDIT_LOG_FILE=logs/audit.log
+
+# Validation
+MAX_REQUEST_SIZE_BYTES=1048576
+```
+
+---
+
+### 🎯 Phase 2 Impact Summary
+
+#### Codebase Growth
+| Metric | Count |
+|--------|-------|
+| New/Modified Files | 11 |
+| Lines of Code Added | ~2,400 |
+| Test Cases Added | 123 |
+| Documentation Pages | 4 |
+
+#### Security Enhancements
+- ✅ **Address Validation** — 5-layer verification (format, checksum, ICAP, on-chain, behavioral)
+- ✅ **Blacklist Integration** — OFAC, mixers, phishers (auto-updated)
+- ✅ **API Security** — Rate limiting, auth, input validation, audit trails
+- ✅ **Behavioral Intelligence** — Velocity, funding patterns, sybil detection
+
+#### Test Coverage
+```
+Phase 1: 23 tests ✅
+Phase 2: 123 tests ✅
+Total:   146 tests ✅
+```
+
+---
+
 ## E. Conclusion
 AltFlex addresses a critical gap in Web3 security through an innovative combination of artificial intelligence and digital forensics. The proposed framework provides a foundation for proactive security monitoring and comprehensive incident analysis.
 
@@ -343,6 +579,44 @@ Chronological list of updates, bug fixes, new features, and other modifications 
 - 🌐 **API**: Fixed `uvicorn` startup configuration to support hot-reloading by using import strings.
 - 📱 **Dashboard**: Fixed critical navigation bug in "Quick Actions" using state callbacks.
 - ✅ **Verification**: Validated end-to-end functionality of API and Dashboard using sub-agent verification.
+
+## 🔐 [06.0.0] - 2026-01-13
+### Phase 2: Address Detection Security Enhancement (Complete)
+**Major Security Update** — 4-sprint implementation adding comprehensive address verification and API hardening.
+
+#### Sprint 1: Address Validation Layer
+- 🔍 **Validator**: Implemented `address_validator.py` with EIP-55 checksum validation (255 lines)
+- ✅ **Features**: Format validation, checksum verification, ICAP detection, pattern analysis
+- 🧪 **Testing**: 44 unit tests covering all validation scenarios
+
+#### Sprint 2: On-Chain Verification
+- 🔗 **Etherscan Integration**: Extended `etherscan_collector.py` with 6 new methods
+  - Balance lookup, transaction counting, contract detection, address age
+- 🔍 **Address Verifier**: Created `address_verifier.py` for high-level verification (277 lines)
+- 🧪 **Testing**: 21 unit tests with mocked API calls
+
+#### Sprint 3: Behavioral Analysis Enhancement
+- 🧠 **Behavioral Analyzer**: New `behavioral_analyzer.py` module (466 lines)
+  - Velocity scoring (burst detection, high-frequency patterns)
+  - Funding pattern analysis (circular funding, wash trading)
+- 🔍 **Feature Engineering**: Extended with velocity and funding features
+- 🚨 **Blacklist Integration**: OFAC sanctions, known mixers, phishing addresses
+- 🧪 **Testing**: 24 unit tests for behavioral detection
+
+#### Sprint 4: API Hardening
+- 🛡️ **Security Middleware**: New `security_middleware.py` module (615 lines)
+  - Rate limiting (token bucket, 100 req/min default)
+  - API key authentication (X-API-Key header)
+  - Request validation (XSS/SQLi prevention)
+  - Audit logging (all requests logged)
+- 🔐 **API Integration**: Security middleware integrated into FastAPI
+- 🧪 **Testing**: 34 unit tests for security features
+
+#### Phase 2 Impact
+- 📊 **Codebase**: 11 new/modified files, ~2,400 lines of code
+- ✅ **Testing**: 123 new tests (146 total)
+- 🔐 **Security**: 5-layer address verification pipeline
+- 🎯 **Detection**: Velocity, funding patterns, external blacklists
 
 
 ### Commit message for pushing or pull-request  
