@@ -160,6 +160,143 @@ class FeatureEngineer:
             'flash_loan_tx_count': 0,
         }
     
+    def compute_velocity_features(self, transactions: pd.DataFrame, address: str) -> Dict[str, Any]:
+        """
+        Compute transaction velocity features for an address.
+        
+        Sprint 3 Enhancement: ML-P2-009
+        
+        Args:
+            transactions: DataFrame with transaction history
+            address: Address to analyze
+            
+        Returns:
+            Dictionary of velocity-based features
+        """
+        addr_lower = address.lower()
+        mask = (transactions['from_address'].str.lower() == addr_lower) | \
+               (transactions['to_address'].str.lower() == addr_lower)
+        addr_txs = transactions[mask].copy()
+        
+        if len(addr_txs) == 0:
+            return {
+                'velocity_tx_per_day': 0.0,
+                'velocity_max_hourly': 0,
+                'velocity_burst_count': 0,
+                'velocity_score': 0.0,
+            }
+        
+        # Convert timestamp
+        addr_txs['timestamp'] = addr_txs['timestamp'].astype(int)
+        addr_txs['datetime'] = pd.to_datetime(addr_txs['timestamp'], unit='s')
+        
+        # Calculate time span
+        time_span_seconds = addr_txs['timestamp'].max() - addr_txs['timestamp'].min()
+        days_active = max(time_span_seconds / 86400, 1)
+        tx_per_day = len(addr_txs) / days_active
+        
+        # Hourly buckets for burst detection
+        addr_txs['hour_bucket'] = addr_txs['datetime'].dt.floor('H')
+        hourly_counts = addr_txs.groupby('hour_bucket').size()
+        max_hourly = hourly_counts.max() if len(hourly_counts) > 0 else 0
+        
+        # Count burst periods (hours with > 10 transactions)
+        burst_count = (hourly_counts > 10).sum()
+        
+        # Velocity score (0-1)
+        velocity_score = min(1.0, (tx_per_day / 50) * 0.5 + (max_hourly / 20) * 0.5)
+        
+        return {
+            'velocity_tx_per_day': round(tx_per_day, 2),
+            'velocity_max_hourly': int(max_hourly),
+            'velocity_burst_count': int(burst_count),
+            'velocity_score': round(velocity_score, 3),
+        }
+    
+    def compute_funding_pattern_features(self, transactions: pd.DataFrame, address: str) -> Dict[str, Any]:
+        """
+        Compute funding source pattern features for an address.
+        
+        Sprint 3 Enhancement: ML-P2-010
+        
+        Args:
+            transactions: DataFrame with transaction history
+            address: Address to analyze
+            
+        Returns:
+            Dictionary of funding pattern features
+        """
+        addr_lower = address.lower()
+        
+        # Incoming transactions
+        incoming = transactions[transactions['to_address'].str.lower() == addr_lower]
+        outgoing = transactions[transactions['from_address'].str.lower() == addr_lower]
+        
+        if len(incoming) == 0:
+            return {
+                'funding_source_count': 0,
+                'funding_concentration': 0.0,
+                'circular_funding_flag': 0,
+                'funding_diversity_score': 0.0,
+            }
+        
+        # Funding source analysis
+        funding_sources = incoming['from_address'].str.lower().value_counts()
+        source_count = len(funding_sources)
+        
+        # Concentration (% from top source)
+        concentration = funding_sources.iloc[0] / len(incoming) if len(incoming) > 0 else 0
+        
+        # Circular funding detection
+        outgoing_recipients = set(outgoing['to_address'].str.lower())
+        circular_sources = set(funding_sources.index) & outgoing_recipients
+        circular_flag = 1 if len(circular_sources) > 0 else 0
+        
+        # Diversity score (inverse of concentration, adjusted for source count)
+        diversity = (1 - concentration) * min(1.0, source_count / 10)
+        
+        return {
+            'funding_source_count': source_count,
+            'funding_concentration': round(concentration, 3),
+            'circular_funding_flag': circular_flag,
+            'funding_diversity_score': round(diversity, 3),
+        }
+    
+    def extract_enhanced_address_features(self, transactions: pd.DataFrame, address: str) -> Dict[str, Any]:
+        """
+        Extract comprehensive address-level features including behavioral analysis.
+        
+        Sprint 3 Enhancement: Combines all address intelligence.
+        
+        Args:
+            transactions: DataFrame with transaction history
+            address: Address to analyze
+            
+        Returns:
+            Dictionary with all address-level features
+        """
+        # Get base features
+        base_features = self.extract_address_features(transactions, address)
+        
+        # Add velocity features
+        velocity_features = self.compute_velocity_features(transactions, address)
+        
+        # Add funding pattern features
+        funding_features = self.compute_funding_pattern_features(transactions, address)
+        
+        # Combine all features
+        enhanced = {**base_features, **velocity_features, **funding_features}
+        
+        # Add composite risk indicators
+        enhanced['behavioral_risk_score'] = round(
+            velocity_features['velocity_score'] * 0.4 +
+            (1 - funding_features['funding_diversity_score']) * 0.3 +
+            funding_features['circular_funding_flag'] * 0.3,
+            3
+        )
+        
+        return enhanced
+    
     def prepare_training_data(self, df: pd.DataFrame) -> tuple:
         """
         Prepare features and labels for model training.
