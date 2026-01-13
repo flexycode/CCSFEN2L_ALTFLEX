@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import List, Optional, Dict, Any
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -41,6 +41,14 @@ from src.app.schemas import (
 from src.forensics.exploit_detector import ExploitDetector
 from src.models.feature_engineer import FeatureEngineer
 from src.models.anomaly_detector import AnomalyDetector
+
+# Import security middleware (Sprint 4)
+from src.app.security_middleware import (
+    setup_security_middleware,
+    require_api_key,
+    SecurityConfig,
+    get_audit_logger,
+)
 
 # Try to load sample data
 import pandas as pd
@@ -136,6 +144,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Security middleware (Sprint 4 - API Hardening)
+# Adds: Rate limiting, Request validation, Audit logging
+setup_security_middleware(app)
 
 
 # =============================================================================
