@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   AltFlex Premium Theme - Dark Mode First with Glassmorphism
+   ============================================================================= */
+
+:root {
+  /* Primary Colors */
+  --background: #0A0F1C;
+  --foreground: #F8FAFC;
+
+  /* Navy Palette */
+  --navy-900: #0A0F1C;
+  --navy-800: #0F172A;
+  --navy-700: #1E293B;
+  --navy-600: #334155;
+
+  /* Accent Colors */
+  --electric-blue: #3B82F6;
+  --electric-blue-glow: #60A5FA;
+  --cyber-green: #10B981;
+  --cyber-green-glow: #34D399;
+  --warning-amber: #F59E0B;
+  --critical-red: #EF4444;
+
+  /* Glass Effect */
+  --glass-bg: rgba(15, 23, 42, 0.8);
+  --glass-border: rgba(148, 163, 184, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.25);
+
+  /* Text */
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-navy-600: var(--navy-600);
+  --color-electric-blue: var(--electric-blue);
+  --color-cyber-green: var(--cyber-green);
+  --color-warning-amber: var(--warning-amber);
+  --color-critical-red: var(--critical-red);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* =============================================================================
+   Global Styles
+   ============================================================================= */
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+  /* Increased base font size */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* =============================================================================
+   Typography - Larger, More Readable
+   ============================================================================= */
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.text-sm {
+  font-size: 1rem !important;
+}
+
+.text-xs {
+  font-size: 0.875rem !important;
+}
+
+.text-lg {
+  font-size: 1.25rem !important;
+}
+
+.text-xl {
+  font-size: 1.5rem !important;
+}
+
+.text-2xl {
+  font-size: 2rem !important;
+}
+
+.text-3xl {
+  font-size: 2.5rem !important;
+}
+
+.text-4xl {
+  font-size: 3rem !important;
+}
+
+.text-5xl {
+  font-size: 3.5rem !important;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* =============================================================================
+   Glassmorphism Components
+   ============================================================================= */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.15),
+    0 8px 10px -6px rgba(0, 0, 0, 0.15),
+    0 0 30px rgba(59, 130, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+/* =============================================================================
+   Glow Effects
+   ============================================================================= */
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2);
+}
+
+.glow-amber {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), 0 0 40px rgba(245, 158, 11, 0.2);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), 0 0 40px rgba(239, 68, 68, 0.2);
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* =============================================================================
+   Buttons - Larger, More Prominent
+   ============================================================================= */
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--electric-blue) 0%, #2563EB 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 1.125rem;
+  padding: 16px 32px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px 0 rgba(59, 130, 246, 0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.125rem;
+  padding: 16px 32px;
+  border-radius: 14px;
+  border: 2px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+/* =============================================================================
+   Animated Background Grid
+   ============================================================================= */
+
+.grid-background {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =============================================================================
+   Status Badges
+   ============================================================================= */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-safe {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--cyber-green);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--warning-amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--critical-red);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* =============================================================================
+   Animations
+   ============================================================================= */
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* =============================================================================
+   Scrollbar Styling
+   ============================================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--navy-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--navy-700);
+}
+
+/* =============================================================================
+   Selection
+   ============================================================================= */
+
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+}
