@@ -84,7 +84,7 @@ export default function AnalyzePage() {
                                             type="number"
                                             step="0.001"
                                             value={formData.value_eth}
-                                            onChange={(e) => setFormData({ ...formData, value_eth: parseFloat(e.target.value) })}
+                                            onChange={(e) => setFormData({ ...formData, value_eth: parseFloat(e.target.value) || 0 })}
                                             className="w-full h-12 px-4 bg-[#1E293B] border border-[#334155] rounded-xl text-white text-sm focus:outline-none focus:border-[#3B82F6] transition-colors"
                                         />
                                     </div>
@@ -93,7 +93,7 @@ export default function AnalyzePage() {
                                         <input
                                             type="number"
                                             value={formData.gas_used}
-                                            onChange={(e) => setFormData({ ...formData, gas_used: parseInt(e.target.value) })}
+                                            onChange={(e) => setFormData({ ...formData, gas_used: parseInt(e.target.value) || 0 })}
                                             className="w-full h-12 px-4 bg-[#1E293B] border border-[#334155] rounded-xl text-white text-sm focus:outline-none focus:border-[#3B82F6] transition-colors"
                                         />
                                     </div>
