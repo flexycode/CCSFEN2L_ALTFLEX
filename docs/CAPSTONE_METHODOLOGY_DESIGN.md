@@ -427,23 +427,4 @@ The project successfully delivered a production-ready AI-powered forensic framew
 
 ---
 
-## 📌 SUBMISSION NOTE
 
-**Dear Professor Armida Salazar,**
-
-This methodology design document represents my **temporary draft submission** for the Capstone Project Methodology Design activity. This document outlines the Agile Scrum approach used for the AltFlex project, including detailed sprint breakdowns, roles and responsibilities, tools and techniques, and visual diagrams.
-
-**Please note:** This submission will undergo **collaborative revision** with my two groupmates from **Section COM232** to produce the **final polished output**. We will incorporate their feedback, refine the visual diagrams, and ensure alignment across all team deliverables before the final submission deadline.
-
-The final version will include:
-- Enhanced Gantt chart visualization
-- Refined sprint backlog examples
-- Additional burndown charts
-- Team consensus on role definitions and responsibilities
-
-Thank you for your understanding and guidance throughout this capstone project.
-
-**Respectfully submitted,**  
-Jay Arre P. Talosig  
-Section COM231  
-January 15, 2026
