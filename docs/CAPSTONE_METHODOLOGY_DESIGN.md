@@ -411,6 +411,13 @@ flowchart LR
    [https://github.com/flexycode/CCSFEN2L_ALTFLEX/blob/main/docs/CODE_REVIEW_PHASE2_ADDRESS_SECURITY.md](https://github.com/flexycode/CCSFEN2L_ALTFLEX/blob/main/docs/CODE_REVIEW_PHASE2_ADDRESS_SECURITY.md)  
    *Detailed technical review of address verification and security enhancements implemented in Phase 2*
 
+4. **Capstone Methodology Design:**  
+   [https://github.com/flexycode/CCSFEN2L_ALTFLEX/blob/main/docs/CAPSTONE_METHODOLOGY_DESIGN.md](https://github.com/flexycode/CCSFEN2L_ALTFLEX/blob/main/docs/CAPSTONE_METHODOLOGY_DESIGN.md)  
+   *Methodology design document for the AltFlex capstone project*
+
+5. **AltFlex Sprint Planning & Task Board:**  
+   [GitHub Projects Kanban Board](https://github.com/users/flexycode/projects/9)  
+   *Interactive sprint backlog and task tracking board for Agile Scrum workflow management*
 ---
 
 ## 13. CONCLUSION
