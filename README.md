@@ -555,6 +555,8 @@ source .venv/bin/activate
 ```
 
 #### Step 2: Install Python Dependencies
+
+##### Windows OS
 ```bash
 # Standard (if python/pip in PATH):
 pip install -r requirements.txt
@@ -562,6 +564,43 @@ pip install -r requirements.txt
 # Windows Alternative (if pip not found):
 .\.venv\Scripts\pip.exe install -r requirements.txt
 ```
+
+##### Pop_OS, Linux Mint, or any Ubuntu Linux Distro 
+```bash
+# Check Python versions
+python3 --version && python --version || true
+
+# Check Node.js versions
+node --version && npm --version
+
+# Create venv and install requirements
+python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+
+# Install Python 3.10 venv (if needed)
+sudo apt update && sudo apt install -y python3.10-venv
+
+# Verify venv creation
+test -d .venv && echo '.venv exists' || echo '.venv missing'
+
+# Activate and install
+. .venv/bin/activate && python -m pip install --upgrade pip && pip install -r requirements.txt
+
+# List venv files
+ls -la .venv && find .venv -maxdepth 2 -type f -name activate -o -name python -o -name pip | head
+
+# Verify venv help
+python3 -m venv --help | head -n 20
+
+# List venv bin directory
+ls -la .venv/bin
+
+# Check for running processes on ports 8000 and 3000
+ss -ltnp | (grep -E ':(8000|3000)\s' || true)
+
+#
+python3 -m venv --clear .venv && . .venv/bin/activate && python -m pip install --upgrade pip && pip install -r requirements.txt
+```
+
 
 #### Step 3: Run the Backend API
 ```bash
