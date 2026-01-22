@@ -602,7 +602,18 @@ python3 -m venv --clear .venv && . .venv/bin/activate && python -m pip install -
 ```
 
 
-#### Step 3: Run the Backend API
+#### Step 3: Run the Backend API { If things get fuck-up try to run  the step 4 Frontend then proceed to Step 3 }
+
+##### Linux
+```bash
+# Step 1:
+curl -sS -i http://127.0.0.1:8000/health | head -n 20
+
+# Step 2:
+curl -sS -I http://localhost:3000 | head -n 20
+```
+
+##### Windows
 ```bash
 # Standard:
 uvicorn src.app.main:app --reload --port 8000
@@ -614,6 +625,15 @@ py -m uvicorn src.app.main:app --host 127.0.0.1 --port 8000
 #### Step 4: Run the Frontend
 Open a **second terminal**, navigate to the frontend directory, and start the Next.js dev server:
 
+##### Linux
+```bash
+# Step 1:
+venv/bin/python -m uvicorn src.app.main:app --reload --host 127.0.0.1 --port 8000
+
+# Step 2:
+test -d node_modules && echo 'node_modules exists' || echo 'node_modules missing'
+```
+##### Windows
 ```bash
 cd frontend
 npm install  # First time only
