@@ -554,8 +554,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-#### Step 2: Install Python Dependencies
-
+#### Step 2: Install Python Dependencies {NOTE THIS IS FOR FIRST TIME ONLY if theirs no Python Dependencies in your localhost otherwise proceed to Step 4}
 ##### Windows OS
 ```bash
 # Standard (if python/pip in PATH):
@@ -613,6 +612,11 @@ curl -sS -i http://127.0.0.1:8000/health | head -n 20
 curl -sS -I http://localhost:3000 | head -n 20
 ```
 
+##### Linux Option 2 Step
+```
+.venv/bin/python -m uvicorn src.app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
 ##### Windows
 ```bash
 # Standard:
@@ -633,6 +637,11 @@ venv/bin/python -m uvicorn src.app.main:app --reload --host 127.0.0.1 --port 800
 # Step 2:
 test -d node_modules && echo 'node_modules exists' || echo 'node_modules missing'
 ```
+##### Linux Option 2 step:
+```bash
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000 npm run dev
+```
+
 ##### Windows
 ```bash
 cd frontend
