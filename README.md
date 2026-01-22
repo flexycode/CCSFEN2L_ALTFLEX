@@ -553,6 +553,42 @@ python -m venv .venv
 # Mac/Linux:
 source .venv/bin/activate
 ```
+#### .env
+```
+# AltFlex Environment Configuration
+# Copy this file to .env and fill in your values
+
+# =============================================================================
+# API Keys (Optional - Mock data used if not provided)
+# =============================================================================
+ETHERSCAN_API_KEY=your_etherscan_api_key_here
+POLYGONSCAN_API_KEY=your_polygonscan_api_key_here
+
+# =============================================================================
+# Application Settings
+# =============================================================================
+# Set to 'development' for mock data, 'production' for live APIs
+APP_ENV=development
+
+# API Server
+API_HOST=0.0.0.0
+API_PORT=8000
+
+# Dashboard
+DASHBOARD_PORT=8501
+
+# =============================================================================
+# Model Configuration
+# =============================================================================
+MODEL_PATH=models/anomaly_detector.pkl
+DETECTION_THRESHOLD=0.7
+
+# =============================================================================
+# Logging
+# =============================================================================
+LOG_LEVEL=INFO
+
+```
 
 #### Step 2: Install Python Dependencies {NOTE THIS IS FOR FIRST TIME ONLY if theirs no Python Dependencies in your localhost otherwise proceed to Step 4}
 ##### Windows OS
