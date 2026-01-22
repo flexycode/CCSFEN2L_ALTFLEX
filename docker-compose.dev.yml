@@ -1,0 +1,53 @@
+# Development configuration with hot-reload
+# Usage: docker compose -f docker-compose.dev.yml up
+
+services:
+  # FastAPI Backend Service (Development)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: altflex-backend-dev
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount source for hot-reload
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - ENVIRONMENT=development
+    env_file:
+      - .env
+    # Override command for development with reload
+    command: [ "uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload" ]
+    restart: unless-stopped
+    networks:
+      - altflex-network
+
+  # Next.js Frontend Service (Development)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: altflex-frontend-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source for hot-reload (exclude node_modules)
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - WATCHPACK_POLLING=true
+    restart: unless-stopped
+    networks:
+      - altflex-network
+
+networks:
+  altflex-network:
+    driver: bridge
+    name: altflex-network-dev

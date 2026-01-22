@@ -1,14 +1,51 @@
-version: '3.8'
-
 services:
-  app:
-    build: .
+  # FastAPI Backend Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: altflex-backend
     ports:
-      - "8501:8501"  # Streamlit
-      - "8000:8000"  # FastAPI
+      - "8000:8000"
     volumes:
-      - ./src:/app/src
+      - ./src:/app/src:ro
       - ./data:/app/data
-    command: bash -c "uvicorn src.app.main:app --host 0.0.0.0 --port 8000 & streamlit run src/app/dashboard.py"
+      - ./logs:/app/logs
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - ENVIRONMENT=development
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - altflex-network
+
+  # Next.js Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: altflex-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - altflex-network
+
+networks:
+  altflex-network:
+    driver: bridge
+    name: altflex-network

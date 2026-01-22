@@ -432,9 +432,113 @@ Once the application is running, you can access the services at:
 - **API Docs (Swagger)**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **API Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
 
-### Option 1: Running Locally (Recommended)
+---
 
-**Prerequisites:** Python 3.10+
+### Option 1: Running with Docker Compose (Recommended)
+
+**Prerequisites:** Docker Desktop (Windows) or Docker Engine (Linux)
+
+#### Windows: Install and Configure Docker Desktop
+
+1. **Download Docker Desktop** from [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
+
+2. **Install Docker Desktop** and follow the installation wizard
+
+3. **Fix "docker-users" Group Membership** (if you see this error when opening Docker Desktop)
+
+   > ⚠️ **Common Error**: "Docker Desktop requires that your user is a member of the 'docker-users' group."
+
+   **Solution - Option A: PowerShell (Easiest)**
+   
+   Run this command **as Administrator**:
+   ```powershell
+   Add-LocalGroupMember -Group "docker-users" -Member $env:USERNAME
+   ```
+   
+   **Steps:**
+   - Right-click on **PowerShell** in Start Menu → **Run as Administrator**
+   - Paste the command above and press Enter
+   - **Log out** of Windows and **log back in** (or restart your PC)
+   - Open Docker Desktop - it should work now!
+
+   **Solution - Option B: Computer Management GUI**
+   
+   1. Press `Win + R`, type `lusrmgr.msc`, press Enter
+   2. Click **Groups** in the left panel
+   3. Double-click **docker-users**
+   4. Click **Add** → type your username → **Check Names** → **OK**
+   5. **Log out and log back in**
+
+   **Verify Group Membership:**
+   ```powershell
+   whoami /groups | findstr docker-users
+   ```
+
+4. **Enable WSL 2 Backend** (recommended for performance):
+   - Open Docker Desktop Settings → General
+   - Enable "Use WSL 2 based engine"
+
+#### Linux: Install Docker Engine
+
+For **Pop!_OS 22.04 LTS** or **Linux Mint**, see the comprehensive guide in [docs/DOCKER_SETUP_GUIDE.md](docs/DOCKER_SETUP_GUIDE.md).
+
+**Quick Install (Ubuntu-based):**
+```bash
+# Install Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Add your user to docker group
+sudo usermod -aG docker $USER
+newgrp docker
+
+# Verify installation
+docker --version
+docker compose version
+```
+
+#### Run the Application
+
+**Step 1: Clone and Configure**
+```bash
+git clone https://github.com/flexycode/CCSFEN2L_ALTFLEX.git
+cd CCSFEN2L_ALTFLEX
+
+# Copy environment file
+cp .env.example .env
+```
+
+**Step 2: Start Services**
+
+**Development Mode (with hot-reload):**
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
+
+**Production Mode:**
+```bash
+docker compose up --build -d
+```
+
+**Step 3: Access the Application**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
+- API Docs: http://localhost:8000/docs
+
+**Stop Services:**
+```bash
+# Development
+docker compose -f docker-compose.dev.yml down
+
+# Production
+docker compose down
+```
+
+---
+
+### Option 2: Running Locally (No Docker)
+
+**Prerequisites:** Python 3.10+, Node.js 20+
 
 #### Step 1: Create Virtual Environment
 ```bash
@@ -450,7 +554,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-#### Step 2: Install Dependencies
+#### Step 2: Install Python Dependencies
 ```bash
 # Standard (if python/pip in PATH):
 pip install -r requirements.txt
@@ -488,16 +592,20 @@ pytest tests/ -v
 .\.venv\Scripts\python.exe -m pytest tests/ -v
 ```
 
-### Option 2: Running with Docker
-```bash
-# Build and start all services
-docker-compose up -d --build
-
-# Stop services
-docker-compose down
-```
+---
 
 ### 🔧 Troubleshooting
+
+#### Docker Issues
+
+| Issue | Solution |
+|-------|----------|
+| `docker-users group error` | Follow the Windows docker-users fix above |
+| `Cannot connect to Docker daemon` | Ensure Docker Desktop is running |
+| `Port already in use` | Stop existing containers: `docker compose down` |
+| `Build failed` | Try `docker compose build --no-cache` |
+
+#### Local Setup Issues
 
 | Issue | Solution |
 |-------|----------|
@@ -508,6 +616,33 @@ docker-compose down
 | `API offline in dashboard` | Start the API server (port 8000) before the frontend |
 | `Frontend not loading` | Run `npm install` in the `frontend/` directory first |
 | `CORS errors` | Ensure API is running on port 8000 and frontend on port 3000 |
+
+#### Docker Commands Cheat Sheet
+
+```bash
+# View running containers
+docker compose ps
+
+# View logs
+docker compose logs -f
+
+# Restart a specific service
+docker compose restart backend
+
+# Rebuild without cache
+docker compose build --no-cache
+
+# Remove all containers and volumes
+docker compose down -v
+```
+
+---
+
+### 📚 Additional Documentation
+
+For detailed Docker setup instructions including Linux distributions (Pop!_OS, Linux Mint), see:
+- **[Docker Setup Guide](docs/DOCKER_SETUP_GUIDE.md)** - Comprehensive installation and troubleshooting
+- **[Phase 3 Frontend Implementation](docs/CODE_REVIEW_PHASE3_FRONTEND_IMPLEMENTATION.md)** - Sprint details and task breakdown
 
 
 <!-- 🤖 Machine Learning 🤖 -->
