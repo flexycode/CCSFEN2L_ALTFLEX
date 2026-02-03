@@ -21,3 +21,9 @@ Thumbs.db
 
 # Environment variables
 .env
+
+# Conversion scripts (not included in repo)
+convert_to_html.py
+convert_to_pdf.py
+create_pdf_reportlab.py
+html_to_pdf.py
