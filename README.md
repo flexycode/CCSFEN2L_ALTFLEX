@@ -1,4 +1,4 @@
-# 💫 AltFlex: AI-Powered Forensic Framework for Exploit Detection in Web3 Cross-chain Bridges and DeFi Protocols
+# 🛡️ AltFlex: Artificial Intelligence Powered Forensic Framework for Exploit Detection
 
 <!-- 🤖 Machine Learning 🤖 -->
 <div align="center">
@@ -8,7 +8,7 @@
 </div>
 
 ## A. Project Overview
-AltFlex is an integrated AI and digital forensics framework designed to proactively detect and analyze security exploits in cross-chain bridges and DeFi protocols. By combining machine learning anomaly detection with blockchain forensic analysis, the system provides a comprehensive security solution for the rapidly evolving Web3 ecosystem.
+AltFlex is an integrated AI and digital forensics framework designed to proactively detect and analyze security exploits in cross-chain bridges and Decentralize Finance protocols. By combining machine learning anomaly detection with blockchain forensic analysis, the system provides a comprehensive security solution for the rapidly evolving Web3 ecosystem.
 
 ## B. Problem Statement
 DeFi protocols and cross-chain bridges are increasingly vulnerable to exploits, resulting in significant financial losses. Current security measures often lack the agility and intelligence to detect sophisticated attack vectors. AltFlex addresses this critical need by providing a proactive and adaptive solution for identifying and mitigating potential exploits using advanced AI/ML techniques.
