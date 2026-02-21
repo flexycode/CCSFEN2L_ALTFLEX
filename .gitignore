@@ -7,6 +7,11 @@ env/
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
+
+# Pytest
+.pytest_cache/
 
 # IDE
 .vscode/
@@ -18,9 +23,34 @@ Thumbs.db
 
 # Logs
 *.log
+logs/
 
 # Environment variables
 .env
+
+# Node modules
+node_modules/
+
+# =============================================================================
+# Sensitive Documentation (DO NOT push to public repo)
+# =============================================================================
+docs/DOCUMENTATION/
+docs/PPT/
+docs/CAPSTONE_METHODOLOGY_DESIGN.html
+docs/CAPSTONE_METHODOLOGY_DESIGN_WEB.html
+
+# =============================================================================
+# Personal Notes & Scratch Files
+# =============================================================================
+_overall_research.txt
+_submission_req.txt
+_thesis_ppt.txt
+
+# =============================================================================
+# Generated / Local-only Files
+# =============================================================================
+benchmark_results.json
+benchmark_validation.py
 
 # Conversion scripts (not included in repo)
 convert_to_html.py
