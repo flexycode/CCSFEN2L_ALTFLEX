@@ -498,7 +498,126 @@ Once the application is running, you can access the services at:
 - **API Docs (Swagger)**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **API Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
 
+### 📸 Application Screenshots & UI Showcase
+
+#### 🏠 Landing Page (`localhost:3000`)
+The entry point of the AltFlex platform featuring a premium dark-themed hero section with animated statistics, feature highlights, and direct navigation to the dashboard.
+
+<div align="center">
+<img src="assets/frontend_landing.png" alt="AltFlex Landing Page" width="100%">
+</div>
+
+> **Key Highlights:**
+> - Hero section with real-time platform statistics (406M+ tracked losses, 5 known exploits, 159 unit tests, 12 API endpoints)
+> - Six enterprise-grade security feature cards (Transaction Analysis, Address Verification, Exploit Database, Real-time Detection, Behavioral Analysis, API Security)
+> - Dark mode with glassmorphism design and smooth scroll navigation
+
 ---
+
+#### 📊 Dashboard (`localhost:3000/dashboard`)
+The main operational hub for monitoring and analyzing blockchain security threats in real-time.
+
+<div align="center">
+<img src="assets/frontend_dashboard.png" alt="AltFlex Dashboard" width="100%">
+</div>
+
+> **Key Highlights:**
+> - **Metric Cards**: Known Exploits (5), Total Tracked Loss ($406.4M), Detection Rules (6), Unit Tests (159)
+> - **Quick Actions**: Analyze Transaction, Verify Address, View Exploits — one-click navigation
+> - **System Health Panel**: Live API Server, ML Detector, Exploit Detector, and Feature Engine status
+> - **API Information**: 12 endpoints, 100 req/min rate limit, FastAPI backend
+
+---
+
+#### 📚 API Documentation (`localhost:8000/docs`)
+Auto-generated Swagger UI for the FastAPI backend, providing interactive API exploration and testing.
+
+<div align="center">
+<img src="assets/api_docs_swagger.png" alt="AltFlex API Swagger Documentation" width="100%">
+</div>
+
+> **Endpoint Groups:**
+> - **Health**: Root (`/`) and health check (`/health`)
+> - **System**: Model information (`/api/model/info`)
+> - **Analysis**: Transaction analysis (`/api/analyze`), batch analysis (`/api/analyze/batch`), address check (`/api/address/check`)
+> - **Database**: List exploits (`/api/exploits`), get exploit details (`/api/exploits/{id}`)
+> - **Detection**: Rule-based detection (`/api/detect/rules`), ML anomaly detection (`/api/detect/anomaly`)
+
+---
+
+#### 🏥 API Health Check (`localhost:8000/health`)
+Real-time system health endpoint showing all component statuses.
+
+<div align="center">
+<img src="assets/api_health.png" alt="AltFlex API Health Check" width="100%">
+</div>
+
+> **Response**: `{"status":"healthy","version":"1.0.0","components":{"api":true,"anomaly_detector":true,"exploit_detector":true,"feature_engineer":true}}`
+
+---
+
+#### 🔍 Transaction Analysis (`localhost:3000/dashboard/analyze`)
+Deep analysis of blockchain transactions using rule-based detection and ML-powered anomaly scoring.
+
+<div align="center">
+<img src="assets/dashboard_analyze.png" alt="AltFlex Transaction Analysis - Empty Form" width="100%">
+</div>
+
+> **Form Inputs:** From Address, To Address, Value (ETH), Gas Used, Gas Price, Flash Loan toggle
+
+**Filled form with suspicious flash loan transaction data:**
+
+<div align="center">
+<img src="assets/dashboard_analyze_filled.png" alt="AltFlex Transaction Analysis - Filled Form" width="100%">
+</div>
+
+**Analysis results showing risk assessment, triggered rules, and ML prediction:**
+
+<div align="center">
+<img src="assets/dashboard_analyze_result.png" alt="AltFlex Transaction Analysis - Results" width="100%">
+</div>
+
+> **Key Features:**
+> - Risk Score visualization with circular gauge (0-100)
+> - Triggered rules with severity badges (CRITICAL / HIGH / MEDIUM / LOW)
+> - ML Prediction with confidence percentage (Anomaly Detected / Normal Transaction)
+> - Split-screen layout — form on left, results on right
+
+---
+
+#### 🛡️ Address Verification (`localhost:3000/dashboard/verify`)
+5-layer security verification for Ethereum addresses against known exploit databases.
+
+<div align="center">
+<img src="assets/dashboard_verify.png" alt="AltFlex Address Verification - Empty State" width="100%">
+</div>
+
+**Verification result for a known attacker address:**
+
+<div align="center">
+<img src="assets/dashboard_verify_result.png" alt="AltFlex Address Verification - Known Attacker Result" width="100%">
+</div>
+
+> **Key Features:**
+> - Status banner — ⚠️ Known Attacker (red) or ✅ Address Safe (green)
+> - Address details with risk level badge
+> - Associated exploit information (name, date, loss amount)
+> - Copy-to-clipboard for verified addresses
+
+---
+
+#### 💀 Exploits Database (`localhost:3000/dashboard/exploits`)
+Searchable database of known DeFi and cross-chain bridge exploits with detailed attacker tracking.
+
+<div align="center">
+<img src="assets/dashboard_exploits.png" alt="AltFlex Exploits Database" width="100%">
+</div>
+
+> **Key Features:**
+> - Searchable list with protocol, date, loss amount, and attack type
+> - Exploit detail cards with attacker addresses
+> - Etherscan integration links for on-chain investigation
+> - Filter by attack type (Flash Loan, Reentrancy, Oracle Manipulation, etc.)
 
 ### Option 1: Running with Docker Compose (Recommended)
 
